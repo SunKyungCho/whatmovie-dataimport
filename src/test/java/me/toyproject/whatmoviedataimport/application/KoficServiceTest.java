@@ -30,7 +30,6 @@ class KoficServiceTest {
         for (String code : codes) {
             movieUpdateRepository.save(new MovieUpdate(code));
         }
-
     }
 
     @Test

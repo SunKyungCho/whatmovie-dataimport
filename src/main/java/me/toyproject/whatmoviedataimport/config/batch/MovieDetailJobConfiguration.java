@@ -8,6 +8,7 @@ import me.toyproject.whatmoviedataimport.repository.MovieRepository;
 import me.toyproject.whatmoviedataimport.repository.MovieUpdateRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -23,6 +24,7 @@ import javax.persistence.EntityManagerFactory;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
+@EnableBatchProcessing
 public class MovieDetailJobConfiguration {
 
 

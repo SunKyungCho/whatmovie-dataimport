@@ -15,11 +15,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Component
 public class MovieDetailProcessor implements ItemProcessor<MovieUpdate, Movie> {
 
     private final static String MOVIE_DETAIL_URL = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json";
     private final RestTemplate restTemplate;
+
     @Value("${kofickey}")
     private String myKey;
 
