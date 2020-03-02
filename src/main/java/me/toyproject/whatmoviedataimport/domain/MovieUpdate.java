@@ -1,8 +1,7 @@
 package me.toyproject.whatmoviedataimport.domain;
 
-import lombok.Getter;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
@@ -12,20 +11,27 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MovieUpdate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long MovieUpdateNo;
     private String movieCode;
-    private Boolean isUpdated = false;
+    private int page;
+    private boolean isUpdated;
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
     public MovieUpdate(String movieCode) {
         this.movieCode = movieCode;
+    }
+
+    public String getMovieCode() {
+        return this.movieCode;
+    }
+
+    public void updated() {
+        this.isUpdated = true;
     }
 }

@@ -2,6 +2,7 @@ package me.toyproject.whatmoviedataimport.config.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.toyproject.whatmoviedataimport.application.MovieService;
 import me.toyproject.whatmoviedataimport.domain.Movie;
 import me.toyproject.whatmoviedataimport.domain.MovieUpdate;
 import me.toyproject.whatmoviedataimport.repository.MovieRepository;
@@ -27,12 +28,10 @@ import javax.persistence.EntityManagerFactory;
 @EnableBatchProcessing
 public class MovieDetailJobConfiguration {
 
-
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
-    private final MovieRepository movieRepository;
-    private final MovieUpdateRepository movieUpdateRepository;
+    private final MovieService movieService;
 
 
     @Bean
@@ -63,9 +62,7 @@ public class MovieDetailJobConfiguration {
         return list -> {
             for (Movie movie : list) {
                 log.info("Current Movie={}", movie.toString());
-                movieRepository.save(movie);
-                MovieUpdate update = movieUpdateRepository.findByMovieCode(movie.getMovieCode());
-                update.setIsUpdated(true);
+                movieService.saveMovie(movie);
             }
         };
     }

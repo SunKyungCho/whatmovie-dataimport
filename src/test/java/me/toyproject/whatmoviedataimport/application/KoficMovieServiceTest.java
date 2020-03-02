@@ -16,25 +16,24 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class KoficServiceTest {
+class KoficMovieServiceTest {
 
     @Autowired
-    KoficService koficService;
+    KoficMovieService koficMovieService;
 
     @Autowired
     MovieUpdateRepository movieUpdateRepository;
 
     @Test
     void fetchMovieCodes() throws Exception {
-        Set<String> codes = koficService.fetchAllMovieCodes();
-        for (String code : codes) {
-            movieUpdateRepository.save(new MovieUpdate(code));
-        }
+        Set<String> codes = koficMovieService.fetchAllMovieCodes();
+        codes.forEach(code -> movieUpdateRepository.save(new MovieUpdate(code)));
     }
 
     @Test
     void saveMovieUpdate() {
-        MovieUpdate movieUpdate = new MovieUpdate("11");
+        MovieUpdate movieUpdate = new MovieUpdate("222");
+        movieUpdate.updated();
         movieUpdateRepository.save(movieUpdate);
     }
 
@@ -43,9 +42,9 @@ class KoficServiceTest {
     void test() {
         DataSource dataSource = DataSourceBuilder.create()
                 .driverClassName("com.mysql.jdbc.Driver")
-                .url("*******")
-                .username("******")
-                .password("******")
+                .url("jdbc:mysql://192.168.0.164:3306/demo_db?characterEncoding=UTF-8&serverTimezone=UTC")
+                .username("search_space")
+                .password("tjcltmvpdltm!!")
                 .build();
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);

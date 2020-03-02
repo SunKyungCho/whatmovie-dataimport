@@ -38,7 +38,7 @@ public class QuartzConfiguration {
         cronTriggerFactoryBean.setJobDetail(job);
         cronTriggerFactoryBean.setName("Daily import movie");
         cronTriggerFactoryBean.setGroup("movie");
-        cronTriggerFactoryBean.setCronExpression("0/1 0 0 ? * * *");
+        cronTriggerFactoryBean.setCronExpression("0 5 0 ? * * *");
         cronTriggerFactoryBean.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
         return cronTriggerFactoryBean;
     }

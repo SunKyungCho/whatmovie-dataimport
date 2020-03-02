@@ -8,7 +8,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -52,17 +51,12 @@ public class MovieDetailProcessor implements ItemProcessor<MovieUpdate, Movie> {
 
     private JsonNode fetchMovieDetailJsonNode(String movieCode) throws ExceedUsageException {
         JsonNode movieDetailNode = restTemplate.getForObject(getMovieDetailUrl(movieCode), JsonNode.class);
-//        if (movieDetailNode != null && isExceedUsage(movieDetailNode)) {
-////            throw new ExceedUsageException("You have exceeded your key daily usage on Kofic api");
-//
-//        }
         return movieDetailNode.get("movieInfoResult").get("movieInfo");
     }
 
     private String getImageUrl(String movieCode) {
-        Document doc = null;
         try {
-            doc = Jsoup.connect("http://www.kobis.or.kr/kobis/business/mast/mvie/searchMovieDtl.do?code=" + movieCode).get();
+            Document doc = Jsoup.connect("http://www.kobis.or.kr/kobis/business/mast/mvie/searchMovieDtl.do?code=" + movieCode).get();
             String imageUri = doc.select(".info1 a").first().attr("href");
             return imageUri.equals("#") ? null : "http://www.kobis.or.kr" + imageUri;
         } catch (Exception e) {
@@ -71,9 +65,8 @@ public class MovieDetailProcessor implements ItemProcessor<MovieUpdate, Movie> {
     }
 
     private String getDescription(String movieCode) {
-        Document doc = null;
         try {
-            doc = Jsoup.connect("http://www.kobis.or.kr/kobis/business/mast/mvie/searchMovieDtl.do?code=" + movieCode).get();
+            Document doc = Jsoup.connect("http://www.kobis.or.kr/kobis/business/mast/mvie/searchMovieDtl.do?code=" + movieCode).get();
             return doc.select(".desc_info").first().ownText();
         } catch (Exception e) {
             return null;
