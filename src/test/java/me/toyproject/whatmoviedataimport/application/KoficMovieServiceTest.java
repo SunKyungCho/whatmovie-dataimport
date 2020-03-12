@@ -26,8 +26,8 @@ class KoficMovieServiceTest {
 
     @Test
     void fetchMovieCodes() throws Exception {
-        Set<String> codes = koficMovieService.fetchAllMovieCodes();
-        codes.forEach(code -> movieUpdateRepository.save(new MovieUpdate(code)));
+//        Set<String> codes = koficMovieService.fetchAllMovieCodes();
+//        codes.forEach(code -> movieUpdateRepository.save(new MovieUpdate(code)));
     }
 
     @Test

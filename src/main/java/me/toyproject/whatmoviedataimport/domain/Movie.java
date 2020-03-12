@@ -30,6 +30,7 @@ public class Movie {
     private String openDate;
     private String productionYear;
     private String actors;
+    @Lob
     private String description;
     private String imageUrl;
     @CreationTimestamp

@@ -44,7 +44,7 @@ public class MovieDetailJobConfiguration {
     @Bean
     public Step fetchMovieDetailStep() {
         return stepBuilderFactory.get("fetchMovieDetail")
-                .<MovieUpdate, Movie>chunk(10)
+                .<MovieUpdate, Movie>chunk(100)
                 .reader(movieUpdateJpaPagingItemReaderReader())
                 .processor(movieDetailProcessor())
                 .writer(writer())
@@ -72,7 +72,7 @@ public class MovieDetailJobConfiguration {
         return new JpaPagingItemReaderBuilder<MovieUpdate>()
                 .name("getMovieUpdateList")
                 .entityManagerFactory(entityManagerFactory)
-                .pageSize(10)
+                .pageSize(100)
                 .maxItemCount(2000)
                 .queryString("SELECT movie from MovieUpdate as movie WHERE isUpdated = false")
                 .build();

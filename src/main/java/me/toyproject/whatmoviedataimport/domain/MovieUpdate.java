@@ -18,7 +18,6 @@ public class MovieUpdate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long MovieUpdateNo;
     private String movieCode;
-    private int page;
     private boolean isUpdated;
     @UpdateTimestamp
     private LocalDateTime updateAt;

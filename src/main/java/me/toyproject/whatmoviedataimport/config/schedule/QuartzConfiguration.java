@@ -46,12 +46,10 @@ public class QuartzConfiguration {
     @Bean
     public SchedulerFactoryBean scheduler(Trigger trigger, JobDetail job, DataSource quartzDataSource) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
-//        schedulerFactory.setConfigLocation(new ClassPathResource("quartz.properties"));
 
         schedulerFactory.setJobFactory(springBeanJobFactory());
         schedulerFactory.setJobDetails(job);
         schedulerFactory.setTriggers(trigger);
-//        schedulerFactory.setDataSource(quartzDataSource);
         return schedulerFactory;
     }
 

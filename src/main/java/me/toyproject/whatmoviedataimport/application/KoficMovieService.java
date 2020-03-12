@@ -25,11 +25,11 @@ public class KoficMovieService {
 
     public void writeTotalMovieCode() throws Exception {
         try {
-            for (int page = 1; page < 800; page++) {
+            for (int page = 268; page < 800; page++) {
                 saveTotalMovieCodes(page);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -40,7 +40,10 @@ public class KoficMovieService {
 
         for (JsonNode node : jsonNode) {
             String movieCd = node.get("movieCd").asText();
-            movieUpdateRepository.save(new MovieUpdate(movieCd));
+            log.info(movieCd);
+            if(movieUpdateRepository.findByMovieCode(movieCd) == null) {
+                movieUpdateRepository.save(new MovieUpdate(movieCd));
+            }
         }
     }
 
