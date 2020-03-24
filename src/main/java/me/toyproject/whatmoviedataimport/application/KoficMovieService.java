@@ -25,7 +25,7 @@ public class KoficMovieService {
 
     public void writeTotalMovieCode() throws Exception {
         try {
-            for (int page = 268; page < 800; page++) {
+            for (int page = 0; page < 800; page++) {
                 saveTotalMovieCodes(page);
             }
         } catch (Exception e) {

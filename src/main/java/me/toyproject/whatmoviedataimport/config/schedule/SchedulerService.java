@@ -2,14 +2,15 @@ package me.toyproject.whatmoviedataimport.config.schedule;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.*;
+import org.quartz.JobDataMap;
+import org.quartz.JobKey;
+import org.quartz.SimpleTrigger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.Date;
 
 @Slf4j
@@ -47,9 +48,7 @@ public class SchedulerService {
             Date date = schedulerFactoryBean.getScheduler().scheduleJob(jobFactoryBean.getObject(), triggerFactoryBean.getObject());
 
             log.debug("Job with jobKey : {} scheduled successfully at date : {}", jobFactoryBean.getObject().getKey(), date);
-        } catch (ObjectAlreadyExistsException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        } catch (SchedulerException | ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

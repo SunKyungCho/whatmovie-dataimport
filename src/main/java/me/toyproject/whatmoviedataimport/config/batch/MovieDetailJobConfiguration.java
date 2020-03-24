@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import me.toyproject.whatmoviedataimport.application.MovieService;
 import me.toyproject.whatmoviedataimport.domain.Movie;
 import me.toyproject.whatmoviedataimport.domain.MovieUpdate;
-import me.toyproject.whatmoviedataimport.repository.MovieRepository;
-import me.toyproject.whatmoviedataimport.repository.MovieUpdateRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -60,8 +58,8 @@ public class MovieDetailJobConfiguration {
     @StepScope
     public ItemWriter<Movie> writer() {
         return list -> {
+            log.info("Writing... " + list.size());
             for (Movie movie : list) {
-                log.info("Current Movie={}", movie.toString());
                 movieService.saveMovie(movie);
             }
         };
@@ -73,7 +71,7 @@ public class MovieDetailJobConfiguration {
                 .name("getMovieUpdateList")
                 .entityManagerFactory(entityManagerFactory)
                 .pageSize(100)
-                .maxItemCount(2000)
+                .maxItemCount(100)
                 .queryString("SELECT movie from MovieUpdate as movie WHERE isUpdated = false")
                 .build();
     }
