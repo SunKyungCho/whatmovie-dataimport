@@ -1,14 +1,11 @@
 package me.toyproject.whatmoviedataimport.batch;
 
-import me.toyproject.whatmoviedataimport.config.batch.MovieDetailJobConfiguration;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
+import org.springframework.batch.core.*;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,17 +13,27 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBatchTest
-@SpringBootTest(classes = {MovieDetailJobConfiguration.class, TestBatchConfig.class})
+@SpringBootTest
+//@SpringBootTest(classes = {MovieDetailJobConfiguration.class})
 public class BatchTest {
 
+//    @Autowired
+//    JobLauncherTestUtils jobLauncherTestUtils;
+//
     @Autowired
-    JobLauncherTestUtils jobLauncherTestUtils;
+    JobLauncher jobLauncher;
+
+    @Autowired
+    Job job;
 
     @Test
     public void batch() throws Exception {
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-        assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addLong("time", System.currentTimeMillis())
+                .toJobParameters();
+        JobExecution run = jobLauncher.run(job, jobParameters);
+//        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
+//        assertThat(jobExecution.getStatus()).isEqualTo(BatchStatus.COMPLETED);
     }
 
     @Test

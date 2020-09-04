@@ -8,7 +8,7 @@ import me.toyproject.whatmoviedataimport.repository.MovieRepository;
 import me.toyproject.whatmoviedataimport.repository.MovieUpdateRepository;
 import org.springframework.stereotype.Service;
 
-import java.beans.Transient;
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +17,7 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final MovieUpdateRepository movieUpdateRepository;
 
-    @Transient
+    @Transactional
     public void saveMovie(Movie movie) {
         movieRepository.save(movie);
         MovieUpdate update = movieUpdateRepository.findByMovieCode(movie.getMovieCode());

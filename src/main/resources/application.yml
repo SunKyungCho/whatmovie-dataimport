@@ -1,7 +1,12 @@
+
+spring.main.allow-bean-definition-overriding: true
 spring:
   profiles:
-    active: mysql
-kofickey: ## 영화 진흥원 Key
+    active: local
+#kofickey: c3ff4ee8a4ef39229a0b67f32520229d
+kofickey: 4700c81bad7d023226fde29aa1aeed9e
+server:
+  port: 7979
 
 ---
 spring:
@@ -12,22 +17,23 @@ spring:
       username: sa
       password:
       driver-class-name: org.h2.Driver
+  batch:
+    job:
+      enabled: false
+
 ---
 spring:
   profiles: mysql
   datasource:
-    url: jdbc:mysql://localhost:3306/movie_db?characterEncoding=UTF-8&serverTimezone=UTC
-    username: username
-    password: password
+    url: jdbc:mysql://nas.queryjet.net:45136/movie_db?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: qlalf321
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
     show-sql: false
     hibernate:
       ddl-auto: none
-  quartz:
-    job-store-type: jdbc
-    scheduler-name: movie-schedule
   main:
     allow-bean-definition-overriding: false
   batch:

@@ -1,4 +1,4 @@
-package me.toyproject.whatmoviedataimport.config.batch;
+package me.toyproject.whatmoviedataimport.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,6 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
@@ -26,26 +25,20 @@ import javax.persistence.EntityManagerFactory;
 @EnableBatchProcessing
 public class MovieDetailJobConfiguration {
 
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
-    private final EntityManagerFactory entityManagerFactory;
-    private final MovieService movieService;
-
-
     @Bean
-    public Job movieDetailJob() {
+    public Job movieDetailJob(JobBuilderFactory jobBuilderFactory) {
         return jobBuilderFactory.get("fetchMovieDetailJob")
-                .start(fetchMovieDetailStep())
+                .start(fetchMovieDetailStep(null))
                 .build();
     }
 
     @Bean
-    public Step fetchMovieDetailStep() {
+    public Step fetchMovieDetailStep(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("fetchMovieDetail")
                 .<MovieUpdate, Movie>chunk(100)
-                .reader(movieUpdateJpaPagingItemReaderReader())
+                .reader(movieUpdateJpaPagingItemReaderReader(null))
                 .processor(movieDetailProcessor())
-                .writer(writer())
+                .writer(writer(null))
                 .build();
     }
 
@@ -55,8 +48,7 @@ public class MovieDetailJobConfiguration {
     }
 
     @Bean
-    @StepScope
-    public ItemWriter<Movie> writer() {
+    public ItemWriter<Movie> writer(MovieService movieService) {
         return list -> {
             log.info("Writing... " + list.size());
             for (Movie movie : list) {
@@ -66,12 +58,12 @@ public class MovieDetailJobConfiguration {
     }
 
     @Bean
-    public JpaPagingItemReader<MovieUpdate> movieUpdateJpaPagingItemReaderReader() {
+    public JpaPagingItemReader<MovieUpdate> movieUpdateJpaPagingItemReaderReader(EntityManagerFactory entityManagerFactory) {
         return new JpaPagingItemReaderBuilder<MovieUpdate>()
                 .name("getMovieUpdateList")
                 .entityManagerFactory(entityManagerFactory)
                 .pageSize(100)
-                .maxItemCount(100)
+                .maxItemCount(2500)
                 .queryString("SELECT movie from MovieUpdate as movie WHERE isUpdated = false")
                 .build();
     }

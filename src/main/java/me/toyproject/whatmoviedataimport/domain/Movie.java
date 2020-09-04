@@ -7,11 +7,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@ToString
+
+
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name = "movie")
+@Getter
 public class Movie {
+
+    @Transient
+    public final static Movie EMPTY_MOVIE = new Movie();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
